@@ -34,7 +34,10 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+  'get /all_experiments': 'ExperimentController.experiments',
+  'get /in_vitro_experiments': 'ExperimentController.inVitroExperiments'
 
   /***************************************************************************
   *                                                                          *
