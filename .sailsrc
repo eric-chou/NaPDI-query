@@ -1,0 +1,12 @@
+{
+  "generators": {
+    "modules": {
+    }
+  },
+  
+  "hooks": {
+    "orm": false, // turn off default waterline orm since we are using sequelize
+    "sockets": false,
+    "pubsub": false 
+  }
+}
