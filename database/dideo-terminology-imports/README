@@ -1,0 +1,13 @@
+The input file for DIDEO concepts is data/4bb83833.csv
+
+This was exported from https://owl2tl.com/ using
+https://owl2tl.com/4bb83833 using the June 2017 release of DIDEO
+(GitHub commit
+https://github.com/DIDEO/DIDEO/commit/a1038d52e30a8116471500fa7f346f4edb728fe4)
+
+$ python generateDideoConceptsInsertSQL.py
+
+By 06/16/2017
+insert concept: 401
+insert vocabulary: 24
+insert domain: 1
