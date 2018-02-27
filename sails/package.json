@@ -22,6 +22,7 @@
     "grunt-sync": "0.5.2",
     "include-all": "^1.0.0",
     "json2csv": "^4.0.0-alpha.0",
+    "jsonexport": "^2.0.11",
     "passport": "^0.4.0",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
