@@ -39,7 +39,10 @@ module.exports.routes = {
   'get /all_experiments': 'ExperimentController.experiments',
   'get /all_experiments/csv': 'ExperimentController.downloadExperiments',
   'get /in_vitro_experiments': 'ExperimentController.inVitroExperiments',
-  'get /in_vitro_experiments/csv': 'ExperimentController.downloadInVitroExperiments'
+  'get /in_vitro_experiments/csv': 'ExperimentController.downloadInVitroExperiments',
+
+  'get /study/:id': 'StudyController.specificStudy',
+  'get /csv/study/:id': 'StudyController.downloadSpecificStudy'
 
   /***************************************************************************
   *                                                                          *
