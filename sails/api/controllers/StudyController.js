@@ -95,7 +95,7 @@ module.exports = {
                 if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
                 return res.json(200, studyExperiments);
             }).catch(err => res.json(500, err));
-            // output seems to work as expected but getting error for every loop:
+            // first iteration of loop seems ok but getting error for every successive loop:
             // Unhandled rejection Error: Can't set headers after they are sent.
         }
     },
