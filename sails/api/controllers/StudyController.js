@@ -61,7 +61,7 @@ module.exports = {
         }).catch(err => res.json(500, err));
         
     },
-    allStudies: function (req, res) {
+    allStudies: async function (req, res) {
         // get full list of study ID's into an array.
         // Study.findAll({
         //     attributes: ['id'], // how to exclude association columns?
@@ -74,14 +74,14 @@ module.exports = {
         //     return res.json(200, studyIds);
         // }).catch(err => res.json(500, err));
 
-        // for now brute force the loaded ID's
+        // for now manually specifying the loaded ID's - needs work
         var studyIds = [1, 2, 4, 5, 7, 10, 11, 12, 13, 14, 15, 16, 23, 24, 28]
         for (var i = 0; i < studyIds.length; i++) {
 
             studyId = studyIds[i];
             console.log("[INFO] Download study (id " + studyId + ") as csv");
 
-            Experiment.findAll({
+            await Experiment.findAll({
                 
                 include: [{
                     model: Study,
@@ -93,11 +93,19 @@ module.exports = {
                 raw: true
             }).then(studyExperiments => {
                 if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
-                return res.json(200, studyExperiments);
+                // return res.json(200, studyExperiments);
+                // console.log(studyExperiments);
+                jsonexport(studyExperiments,function(err, csv){
+                    if(err) return console.log(err);
+                    // console.log(csv);
+                    res.attachment('study-' + studyId + '-experiment-data.csv');
+                    res.setHeader('Content-Type', 'text/csv');
+                    res.end(csv); 
+                }); // TODO maybe better to append studyExperiments to an array and deal with attaching this in another loop?
             }).catch(err => res.json(500, err));
-            // first iteration of loop seems ok but getting error for every successive loop:
             // Unhandled rejection Error: Can't set headers after they are sent.
         }
+
     },
 
     _config: {
