@@ -16,33 +16,50 @@ module.exports = {
 
         Experiment.findAll({
 
-            include: [{
-                model: Study,
-                as: 'study',
-                where: {
-                    'id': studyId
+            include: [
+                {
+                    model: Study,
+                    as: 'study',
+                    where: {
+                        'id': studyId
+                    }
+                },
+                {
+                    model: Measurement,
+                    as: 'measurements',
                 }
-            }],
-            raw: true
+            ],
+            raw: true,
+            logging: console.log
         }).then(studyExperiments => {
-            if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
+            if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + ".");
             return res.json(200, studyExperiments);
         }).catch(err => res.json(500, err));
+
     },
     downloadSpecificStudy: function (req, res) {
 
         var studyId = req.param('id');
         console.log("[INFO] Download study (id " + studyId + ") as csv");
-
+        // try changing scope of model via this controller 
         Experiment.findAll({
-            
             include: [{
-                model: Study,
-                as: 'study',
-                where: {
-                    'id': studyId
+                all: true
+            }], 
+            include: [
+                {
+                    model: Study,
+                    as: 'study',
+                    where: {
+                        'id': studyId
+                    }
+                },
+                {
+                    model: Measurement,
+                    as: 'measurements'
                 }
-            }],
+            ],
+            // currently only returning defaultScope associations -- perhaps should include all associations
             raw: true
         }).then(studyExperiments => {
 
@@ -80,6 +97,7 @@ module.exports = {
 
             studyId = studyIds[i];
             console.log("[INFO] Download study (id " + studyId + ") as csv");
+            // var promises = [];
 
             await Experiment.findAll({
                 
@@ -95,6 +113,8 @@ module.exports = {
                 if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
                 // return res.json(200, studyExperiments);
                 // console.log(studyExperiments);
+                // promises.push(studyExperiments);
+
                 jsonexport(studyExperiments,function(err, csv){
                     if(err) return console.log(err);
                     // console.log(csv);
