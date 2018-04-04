@@ -7,7 +7,6 @@
 
 var jsonexport = require('jsonexport');
 var http = require('http');
-var fs = require('fs');
 var archiver = require('archiver');
 
 module.exports = {
