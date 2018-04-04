@@ -6,6 +6,9 @@
  */
 
 var jsonexport = require('jsonexport');
+var http = require('http');
+var fs = require('fs');
+var archiver = require('archiver');
 
 module.exports = {
 
@@ -112,6 +115,10 @@ module.exports = {
 
         // for now manually specifying the loaded ID's - needs work
         var studyIds = [1, 2, 4, 5, 7, 10, 11, 12, 13, 14, 15, 16, 23, 24, 28]
+        // var studyIds = [1,2,4]
+
+        var zip = archiver('zip');
+
         for (var i = 0; i < studyIds.length; i++) {
 
             studyId = studyIds[i];
@@ -148,18 +155,29 @@ module.exports = {
             }).then(studyExperiments => {
                 if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
                 // return res.json(200, studyExperiments);
-                // console.log(studyExperiments);
+                console.log("Downloading study " + studyId);
                 // promises.push(studyExperiments);
 
                 jsonexport(studyExperiments,function(err, csv){
                     if(err) return console.log(err);
-                    // console.log(csv);
-                    res.attachment('study-' + studyId + '-experiment-data.csv');
-                    res.setHeader('Content-Type', 'text/csv');
-                    res.end(csv); 
-                }); // TODO maybe better to append studyExperiments to an array and deal with attaching this in another loop?
+                    // res.attachment('study-' + studyId + '-experiment-data.csv');
+                    // res.setHeader('Content-Type', 'text/csv');
+                    // res.end(csv);
+                    // console.log(csv); 
+                    if (i == studyIds.length - 1) {
+                        res.writeHead(200, {
+                            'Content-Type': 'application/zip',
+                            'Content-disposition': 'attachment; filename=all_studies.zip'
+                        });
+                        // Send the file to the page output.
+                        zip.pipe(res);
+                        zip.append(csv, { name: 'study-' + studyId + '-experiment-data.csv' }).finalize();
+                    }
+                    else {
+                        zip.append(csv, { name: 'study-' + studyId + '-experiment-data.csv' });
+                    }
+                });
             }).catch(err => res.json(500, err));
-            // Unhandled rejection Error: Can't set headers after they are sent.
         }
 
     },
