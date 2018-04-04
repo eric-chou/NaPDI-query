@@ -25,12 +25,22 @@ module.exports = {
                     }
                 },
                 {
+                    model: TestSystem,
+                    as: 'testSystem',
+                    required: false
+                },
+                {
+                    model: CytochromeB5,
+                    as: 'cytochromeB5',
+                    required: false
+                },
+                {
                     model: Measurement,
                     as: 'measurements',
+                    required:false
                 }
             ],
             raw: true,
-            logging: console.log
         }).then(studyExperiments => {
             if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + ".");
             return res.json(200, studyExperiments);
@@ -41,11 +51,9 @@ module.exports = {
 
         var studyId = req.param('id');
         console.log("[INFO] Download study (id " + studyId + ") as csv");
-        // try changing scope of model via this controller 
+
         Experiment.findAll({
-            include: [{
-                all: true
-            }], 
+
             include: [
                 {
                     model: Study,
@@ -55,11 +63,22 @@ module.exports = {
                     }
                 },
                 {
+                    model: TestSystem,
+                    as: 'testSystem',
+                    required: false
+                },
+                {
+                    model: CytochromeB5,
+                    as: 'cytochromeB5',
+                    required: false
+                },
+                {
                     model: Measurement,
-                    as: 'measurements'
+                    as: 'measurements',
+                    required:false
                 }
             ],
-            // currently only returning defaultScope associations -- perhaps should include all associations
+            // TODO order by experiment ID
             raw: true
         }).then(studyExperiments => {
 
@@ -101,13 +120,30 @@ module.exports = {
 
             await Experiment.findAll({
                 
-                include: [{
-                    model: Study,
-                    as: 'study',
-                    where: {
-                        'id': studyId
+                include: [
+                    {
+                        model: Study,
+                        as: 'study',
+                        where: {
+                            'id': studyId
+                        }
+                    },
+                    {
+                        model: TestSystem,
+                        as: 'testSystem',
+                        required: false
+                    },
+                    {
+                        model: CytochromeB5,
+                        as: 'cytochromeB5',
+                        required: false
+                    },
+                    {
+                        model: Measurement,
+                        as: 'measurements',
+                        required:false
                     }
-                }],
+                ],
                 raw: true
             }).then(studyExperiments => {
                 if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
