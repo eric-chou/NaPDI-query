@@ -49,9 +49,6 @@ module.exports = {
         }).catch(err => res.json(500, err));
 
     },
-    findStudyIds: function (req, res) {
-
-    },
 
     downloadSpecificStudy: function (req, res) {
 
@@ -81,7 +78,7 @@ module.exports = {
                 {
                     model: Measurement,
                     as: 'measurements',
-                    required:false
+                    required: false
                 }
             ],
             // TODO order by experiment ID
@@ -89,8 +86,6 @@ module.exports = {
         }).then(studyExperiments => {
 
             if (!studyExperiments) return res.notFound("No experiment exists."); 
-
-            // console.log(experiments);
 
             jsonexport(studyExperiments,function(err, csv){
                 if(err) return console.log(err);
@@ -103,6 +98,17 @@ module.exports = {
         }).catch(err => res.json(500, err));
         
     },
+
+    findStudyIds: function (req, res) {
+        Study.unscoped().findAll({
+            attributes: ['id'],
+            raw: true
+        }).then(studyIds => {
+            console.log(studyIds);
+            console.log(studyIds[0]['id']);
+        }).catch(err => res.json(500, err));
+    },
+
     allStudies: async function (req, res) {
         // get full list of study ID's into an array.
         // Study.findAll({
@@ -151,7 +157,7 @@ module.exports = {
                     {
                         model: Measurement,
                         as: 'measurements',
-                        required:false
+                        required: false
                     }
                 ],
                 raw: true
