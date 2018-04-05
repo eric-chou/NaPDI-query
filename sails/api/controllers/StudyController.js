@@ -106,21 +106,21 @@ module.exports = {
         }).then(studyIds => {
             console.log(studyIds);
             console.log(studyIds[0]['id']);
+            console.log(typeof(studyIds[0]['id']));
         }).catch(err => res.json(500, err));
     },
 
     allStudies: async function (req, res) {
         // get full list of study ID's into an array.
-        // Study.findAll({
-        //     attributes: ['id'], // how to exclude association columns?
-        //     raw: true
-        // }).then(studyIds => {
-        //     // how to get ID's into an array?
-        //     // console.log(JSON.parse(res.json(200,studyIds)));
-
-        //     if (!studyIds) return res.notFound("No studies exist"); 
-        //     return res.json(200, studyIds);
-        // }).catch(err => res.json(500, err));
+        Study.unscoped().findAll({
+            attributes: ['id'],
+            raw: true
+        }).then(studyIds => {
+            console.log(studyIds);
+            console.log(studyIds[0]['id']);
+            // need code below to run after list of study id's.
+            // nest into this function?
+        }).catch(err => res.json(500, err));
 
         // for now manually specifying the loaded ID's - needs work
         var studyIds = [1, 2, 4, 5, 7, 10, 11, 12, 13, 14, 15, 16, 23, 24, 28]
