@@ -111,6 +111,12 @@ module.exports = {
     },
 
     allStudies: async function (req, res) {
+
+        // for now manually specifying the loaded ID's - needs work
+        var studyIds = [1, 2, 4, 5, 7, 10, 11, 12, 13, 14, 15, 16, 23, 24, 28]
+        // var studyIds = [1,2,4]
+
+        var zip = archiver('zip');
         // get full list of study ID's into an array.
         Study.unscoped().findAll({
             attributes: ['id'],
@@ -121,12 +127,6 @@ module.exports = {
             // need code below to run after list of study id's.
             // nest into this function?
         }).catch(err => res.json(500, err));
-
-        // for now manually specifying the loaded ID's - needs work
-        var studyIds = [1, 2, 4, 5, 7, 10, 11, 12, 13, 14, 15, 16, 23, 24, 28]
-        // var studyIds = [1,2,4]
-
-        var zip = archiver('zip');
 
         for (var i = 0; i < studyIds.length; i++) {
 
