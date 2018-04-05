@@ -44,7 +44,8 @@ module.exports.routes = {
   'get /study/:id': 'StudyController.specificStudy',
   'get /csv/study/:id': 'StudyController.downloadSpecificStudy',
 
-  'get /all_studies': 'StudyController.allStudies'
+  'get /all_studies': 'StudyController.allStudies',
+  'get /studyids': 'StudyController.findStudyIds'
 
   /***************************************************************************
   *                                                                          *

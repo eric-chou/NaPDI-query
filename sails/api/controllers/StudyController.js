@@ -49,6 +49,10 @@ module.exports = {
         }).catch(err => res.json(500, err));
 
     },
+    findStudyIds: function (req, res) {
+
+    },
+
     downloadSpecificStudy: function (req, res) {
 
         var studyId = req.param('id');
