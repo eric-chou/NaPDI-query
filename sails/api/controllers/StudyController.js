@@ -131,7 +131,6 @@ async function downloadAllStudies(studyIds, res) {
 
         studyId = studyIds[i]['id'];
         console.log("[INFO] Download study (id " + studyId + ") as csv");
-        // var promises = [];
 
         await Experiment.findAll({
             
@@ -165,7 +164,6 @@ async function downloadAllStudies(studyIds, res) {
             if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
             // return res.json(200, studyExperiments);
             console.log("Downloading study " + studyId);
-            // promises.push(studyExperiments);
 
             jsonexport(studyExperiments,function(err, csv){
                 if(err) return console.log(err);
