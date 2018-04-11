@@ -42,6 +42,7 @@ module.exports = {
                     required:false
                 }
             ],
+            order: [['id', 'ASC']],
             raw: true,
         }).then(studyExperiments => {
             if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + ".");
@@ -81,7 +82,7 @@ module.exports = {
                     required: false
                 }
             ],
-            // TODO order by experiment ID
+            order: [['id', 'ASC']],
             raw: true
         }).then(studyExperiments => {
 
@@ -158,6 +159,7 @@ async function downloadAllStudies(studyIds, res) {
                     required: false
                 }
             ],
+            order: [['id', 'ASC']],
             raw: true
         }).then(studyExperiments => {
             if (!studyExperiments) return res.notFound("No experiment exists for study id" + studyId + "."); 
